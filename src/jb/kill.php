@@ -265,7 +265,7 @@ class jb extends PluginTask
 	if (!array_key_exists($name,$p->elist)) continue; 
 	
 			 $ent=$p->elist[$name];
-    $ent->setNameTag($this->cachec[$ent->getId()]["nt"]."  HP:".$ent->getHealth()."/".$ent->getMaxHealth());
+    $ent->setNameTag($p->cachec[$ent->getId()]["nt"]."  HP:".$ent->getHealth()."/".$ent->getMaxHealth());
 	
 			 if($pl->distance(new Vector3($ent->x,$ent->y,$ent->z)) > $p->cachec[$ent->getId()]["仇恨范围"]){echo "raise event";unset($p->klist[$ent->getId()]); continue; }
 			 $z=$pl->z-$ent->z;
