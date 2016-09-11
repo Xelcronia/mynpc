@@ -27,6 +27,7 @@ use pocketmine\entity\Projectile;
 use pocketmine\event\entity\EntityShootBowEvent;
 use pocketmine\event\entity\ProjectileLaunchEvent;
 use pocketmine\event\player\PlayerJoinEvent;
+use pocketmine\event\player\PlayerQuitEvent;
 
 if (substr(PHP_VERSION, 0, 1) == '5') {
 	define('p7x',false);
@@ -179,7 +180,7 @@ return;
  $sh=$this->getServer()->getScheduler();
  $sh->scheduleRepeatingTask(new jb($this),1);
     }
-	public function gcaaa(PlayerDeathEvent $event){
+	public function onDeath(PlayerDeathEvent $event){
 		echo "cAADSADSADSXD";
                 $p = $event->getPlayer();
 		$nm=$p->getName();
@@ -189,7 +190,17 @@ return;
 			}
 		}
 	}
-public function gc(EntityDeathEvent $event){
+        public function onQuit(PlayerQuitEvent $event){
+		echo "cAADSADSADSXD";
+                $p = $event->getPlayer();
+		$nm=$p->getName();
+		foreach($this->klist as $id=>$pl){
+			if($pl==$nm){
+				unset($this->klist[$id]);
+			}
+		}
+	}
+        public function gc(EntityDeathEvent $event){
 	$entity = $event->getEntity();
         	$cause = $entity->getLastDamageCause();
 		
