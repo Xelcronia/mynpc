@@ -1,0 +1,26 @@
+name: mynpc
+main: jb\kill
+version: 2.3.3
+api: [1.8.0]
+load: POSTWORLD
+author: cpera
+commands:
+  npc:
+    description: orz
+    usage: "/vip <gm/add/world/remove>"
+    permission: fuckbear.xxo
+  new:
+    description: orz
+    usage: "/vdsip <gm/add/world/remove>"
+    permission: fuckbear.xxo
+  fuhuo:
+    description: orz
+    usage: "/vdsifdp <gm/add/world/remove>"
+    permission: fuckbear.xxo
+permissions:
+  fuckbear.xxo:
+    description: "oo"
+    default: op
+  fuckbear.xxp:
+    description: "oo"
+    default: true
