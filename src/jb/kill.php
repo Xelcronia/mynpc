@@ -20,7 +20,7 @@ use pocketmine\math\Vector3;
 use pocketmine\event\Listener;
 use pocketmine\utils\Config;
 use pocketmine\event\entity\EntityDeathEvent;
-use pocketmine\event\player\PlayerDeathEvent;
+use pocketmine\event\player\PlayerRespawnEvent;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\entity\Projectile;
@@ -180,7 +180,7 @@ return;
  $sh=$this->getServer()->getScheduler();
  $sh->scheduleRepeatingTask(new jb($this),1.5);
     }
-	public function onDeath(PlayerDeathEvent $event){
+	public function onRespawn(PlayerRespawnEvent $event){
 		echo "cAADSADSADSXD";
                 $p = $event->getPlayer();
 		$nm=$p->getName();
