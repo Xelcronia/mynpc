@@ -181,7 +181,8 @@ return;
     }
 	public function gcaaa(PlayerDeathEvent $event){
 		echo "cAADSADSADSXD";
-		$nm=$entity->getName();
+                $p = $event->getPlayer();
+		$nm=$p->getName();
 		foreach($this->klist as $id=>$pl){
 			if($pl==$nm){
 				unset($this->klist[$id]);
