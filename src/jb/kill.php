@@ -178,7 +178,7 @@ return;
 		$this->getLogger()->info(TextFormat::BLUE  . "---------------------------");
 		
  $sh=$this->getServer()->getScheduler();
- $sh->scheduleRepeatingTask(new jb($this),1);
+ $sh->scheduleRepeatingTask(new jb($this),1.5);
     }
 	public function onDeath(PlayerDeathEvent $event){
 		echo "cAADSADSADSXD";
