@@ -274,7 +274,8 @@ class jb extends PluginTask
 			 $ent=$p->elist[$name];
     $ent->setNameTag($p->cachec[$ent->getId()]["nt"]."  HP:".$ent->getHealth()."/".$ent->getMaxHealth());
 	
-			 if($pl->distance(new Vector3($ent->x,$ent->y,$ent->z)) > $p->cachec[$ent->getId()]["仇恨范围"]){echo "raise event";unset($p->klist[$ent->getId()]); continue; }
+			  $spawn = new Vector3($p->cachec[$ent->getId()]["x"],$p->cachec[$ent->getId()]["y"],$p->cachec[$ent->getId()]["z"]);
+			 if($pl->distance($ent) > $p->cachec[$ent->getId()]["仇恨范围"] || $ent->distance($spawn) > $p->cachec[$ent->getId()]["仇恨范围"] ){echo "raise event";$ent->setPosition($spawn);unset($p->klist[$ent->getId()]); continue; }
 			 $z=$pl->z-$ent->z;
 					//$add=0.15;
 				$y=$pl->y-$ent->y;
