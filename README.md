@@ -53,5 +53,5 @@ Welcome join us to Update this plugin !!
 Donate url: https://pl.zxda.net/plugins/511.html
 
 
-
+- We are from China and Taiwan
 
