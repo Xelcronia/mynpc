@@ -28,6 +28,13 @@ use pocketmine\event\entity\EntityShootBowEvent;
 use pocketmine\event\entity\ProjectileLaunchEvent;
 use pocketmine\event\player\PlayerJoinEvent;
 use pocketmine\event\player\PlayerQuitEvent;
+use pocketmine\nbt\tag\Compound;
+use pocketmine\nbt\tag\String;
+use pocketmine\nbt\tag\Double;
+use pocketmine\nbt\tag\List;
+use pocketmine\nbt\tag\Float;
+use pocketmine\nbt\tag\Short;
+use pocketmine\nbt\tag\Byte;
 
 if (substr(PHP_VERSION, 0, 1) == '5') {
 	define('p7x',false);
