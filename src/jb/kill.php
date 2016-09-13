@@ -275,8 +275,7 @@ class jb extends PluginTask
     $ent->setNameTag($p->cachec[$ent->getId()]["nt"]."  HP:".$ent->getHealth()."/".$ent->getMaxHealth());
 	
 			  $spawn = new Vector3($p->cachec[$ent->getId()]["x"],$p->cachec[$ent->getId()]["y"],$p->cachec[$ent->getId()]["z"]);
-			 if($pl->distance($ent) > $p->cachec[$ent->getId()]["仇恨范围"] || $ent->distance($spawn) > $p->cachec[$ent->getId()]["仇恨范围"] ){echo "raise event";$ent->setPosition($spawn);unset($p->klist[$ent->getId()]); continue; }
-			 $z=$pl->z-$ent->z;
+			 if($pl->distance($ent) > $p->cachec[$ent->getId()]["仇恨范围"] || $ent->distance($spawn) > $p->cachec[$ent->getId()]["仇恨范围"] ){echo "raise event";$this->BackToSpawn($ent); continue; }
 					//$add=0.15;
 				$y=$pl->y-$ent->y;
 				$x=$pl->x-$ent->x;
@@ -355,4 +354,21 @@ class jb extends PluginTask
 	 }
     }
 }
+
+public function BackToSpawn($ent){
+foreach($p->klist as $name=>$ply){
+
+$spawn = new Vector3($p->cachec[$ent->getId()]["x"],$p->cachec[$ent->getId()]["y"],$p->cachec[$ent->getId()]["z"]);
+$s->getPlayer($ply)->sendMessage($p->msg->get("npc-back-to-spawn-tip"));
+$ent->setPosition($spawn);
+$this->heal($ent);
+unset($p->klist[$ent->getId()]);
+continue;
+}
+}
+
+public function heal($ent){
+$ent->setHealth((int)$p->cachec[$ent->getId()]["health"]);
+}
+
 }
