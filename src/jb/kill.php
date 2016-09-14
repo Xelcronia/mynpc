@@ -70,7 +70,7 @@ public function xxo(EntityDamageEvent $e){
 		}
 		$e->setDrops($it);
 	}
-	public function spaw($x,$y,$z,$tp,$level,$hp,$sk,$i){
+	public function spaw($x,$y,$z,$tp,$level,$hp,$sk){
 	
 	 $nbt = new Compound;
      
@@ -230,10 +230,10 @@ return;
 		$pe=$this->cachec[$entity->getId()];
 		foreach($this->getServer()->getOnlinePlayers() as $j){
 			$skin=$j->getSkinData();
-			$sks=$j->isSkinSlim();
+			//$sks=$j->isSkinSlim();
 			break;
 		}
-		$et=$this->spaw($pe["x"],$pe["y"],$pe["z"],$pe["name"],$this->getServer()->getLevel($pe["lid"]),$pe["health"],$skin,$sks);
+		$et=$this->spaw($pe["x"],$pe["y"],$pe["z"],$pe["name"],$this->getServer()->getLevel($pe["lid"]),$pe["health"],$skin);
 $et->setDataProperty("fuck",1,$pe["npc"]);
 //$et->setDataProperty("kq",1,$a[0]);
 $this->cachec[$et->getId()]=$pe;
