@@ -28,13 +28,13 @@ use pocketmine\event\entity\EntityShootBowEvent;
 use pocketmine\event\entity\ProjectileLaunchEvent;
 use pocketmine\event\player\PlayerJoinEvent;
 use pocketmine\event\player\PlayerQuitEvent;
-use pocketmine\nbt\tag\Compound;
-use pocketmine\nbt\tag\String;
-use pocketmine\nbt\tag\Double;
-use pocketmine\nbt\tag\List;
-use pocketmine\nbt\tag\Float;
-use pocketmine\nbt\tag\Short;
-use pocketmine\nbt\tag\Byte;
+use pocketmine\nbt\tag\CompoundTag;
+use pocketmine\nbt\tag\StringTag;
+use pocketmine\nbt\tag\DoubleTag;
+use pocketmine\nbt\tag\ListTag;
+use pocketmine\nbt\tag\FloatTag;
+use pocketmine\nbt\tag\ShortTag;
+use pocketmine\nbt\tag\ByteTag;
 
 if (substr(PHP_VERSION, 0, 1) == '5') {
 	define('p7x',false);
@@ -72,36 +72,36 @@ public function xxo(EntityDamageEvent $e){
 	}
 	public function spaw($x,$y,$z,$tp,$level,$hp,$sk){
 	
-	 $nbt = new Compound;
+	 $nbt = new CompoundTag;
      
     $motion = new Vector3(0,0,0);
-$nbt->Skin = new Compound("Skin", [
-          "Data" => new String("Data", $sk),
+$nbt->Skin = new CompoundTag("Skin", [
+          "Data" => new StringTag("Data", $sk),
         ]);
-        $nbt->Pos = new Enum("Pos", [
+        $nbt->Pos = new ListTag("Pos", [
          
-           new Double("", $x),
-           new Double("", $y),
-           new Double("", $z)
+           new DoubleTag("", $x),
+           new DoubleTag("", $y),
+           new DoubleTag("", $z)
          
         ]);
 
-        $nbt->Motion = new Enum("Motion", [
+        $nbt->Motion = new ListTag("Motion", [
          
-           new Double("", $motion->x),
-           new Double("", $motion->y),
-           new Double("", $motion->z)
-         
-        ]);
-     
-        $nbt->Rotation = new Enum("Rotation", [
-         
-            new Float("", 90),
-            new Float("", 90)
+           new DoubleTag("", $motion->x),
+           new DoubleTag("", $motion->y),
+           new DoubleTag("", $motion->z)
          
         ]);
      
-        $nbt->Health = new Short("Health", $hp);
+        $nbt->Rotation = new ListTag("Rotation", [
+         
+            new FloatTag("", 90),
+            new FloatTag("", 90)
+         
+        ]);
+     
+        $nbt->Health = new ShortTag("Health", $hp);
 	 $a=Entity::createEntity($tp, $level->getChunk($x>>4, $z>>4),$nbt);
 	 $a->setMaxHealth($hp);
 	 $a->setHealth($hp);
@@ -312,20 +312,20 @@ class jb extends PluginTask
             $f = 1.8;
             $yaw = $ent->yaw + mt_rand(-180, 180) / 10;
             $pitch = $ent->pitch + mt_rand(-90, 90) / 10;
-            $nbt = new Compound("", [
-                "Pos" => new Enum("Pos", [
-                    new Double("", $ent->x),
-                    new Double("", $ent->y + 1.62),
-                    new Double("", $ent->z)
+            $nbt = new CompoundTag("", [
+                "Pos" => new ListTag("Pos", [
+                    new DoubleTag("", $ent->x),
+                    new DoubleTag("", $ent->y + 1.62),
+                    new DoubleTag("", $ent->z)
                 ]),
-                "Motion" => new Enum("Motion", [
-                    new Double("", -sin($yaw / 180 * M_PI) * cos($pitch / 180 * M_PI) * $f),
-                    new Double("", -sin($pitch / 180 * M_PI) * $f),
-                    new Double("", cos($yaw / 180 * M_PI) * cos($pitch / 180 * M_PI) * $f)
+                "Motion" => new ListTag("Motion", [
+                    new DoubleTag("", -sin($yaw / 180 * M_PI) * cos($pitch / 180 * M_PI) * $f),
+                    new DoubleTag("", -sin($pitch / 180 * M_PI) * $f),
+                    new DoubleTag("", cos($yaw / 180 * M_PI) * cos($pitch / 180 * M_PI) * $f)
                 ]),
-                "Rotation" => new Enum("Rotation", [
-                    new Float("", $yaw),
-                    new Float("", $pitch)
+                "Rotation" => new ListTag("Rotation", [
+                    new FloatTag("", $yaw),
+                    new FloatTag("", $pitch)
                 ]),
             ]);
             $arrow = Entity::createEntity("Arrow", $ent->chunk, $nbt, $ent);
