@@ -222,7 +222,7 @@ return;
     if($entity->getDataProperty("fuck")!=0){
 		$this->getServer()->dispatchCommand(new ConsoleCommandSender,str_replace("{player}",$killer->getName(),$this->cachec[$entity->getId()]["死亡指令"]));
 		$this->dop($entity->getDataProperty("fuck"),$event);
-		$this->getServer()->broadcastMessage("{$killer->getName()}擊殺了....todo...npc nametag")
+		$this->getServer()->broadcastMessage("{$killer->getName()}擊殺了....todo...npc nametag");
 			unset($this->klist[$entity->getId()]);
 		unset($this->elist[$entity->getId()]);
 		if($this->rep==1){
