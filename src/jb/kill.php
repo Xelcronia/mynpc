@@ -185,7 +185,7 @@ return;
 		$this->getLogger()->info(TextFormat::BLUE  . "---------------------------");
 		
  $sh=$this->getServer()->getScheduler();
- $sh->scheduleRepeatingTask(new jb($this),1.5);
+ $sh->scheduleRepeatingTask(new jb($this),4);
     }
 	public function onRespawn(PlayerRespawnEvent $event){
 		echo "cAADSADSADSXD";
