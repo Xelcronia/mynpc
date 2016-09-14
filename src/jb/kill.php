@@ -359,7 +359,7 @@ public function BackToSpawn($ent){
 foreach($p->klist as $name=>$ply){
 
 $spawn = new Vector3($p->cachec[$ent->getId()]["x"],$p->cachec[$ent->getId()]["y"],$p->cachec[$ent->getId()]["z"]);
-$s->getPlayer($ply)->sendMessage($p->msg->get("npc-back-to-spawn-tip"));
+$s->getPlayer($ply)->sendMessage("已離開攻擊範圍");
 $ent->setPosition($spawn);
 $this->heal($ent);
 unset($p->klist[$ent->getId()]);
