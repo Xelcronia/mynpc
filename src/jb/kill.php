@@ -189,8 +189,7 @@ return;
     }
 	public function onRespawn(PlayerRespawnEvent $event){
 		echo "cAADSADSADSXD";
-                $p = $event->getPlayer();
-		$nm=$p->getName();
+                $nm = $event->getPlayer()->getName();
 		foreach($this->klist as $id=>$pl){
 			if($pl==$nm){
 				unset($this->klist[$id]);
@@ -199,8 +198,7 @@ return;
 	}
         public function onQuit(PlayerQuitEvent $event){
 		echo "cAADSADSADSXD";
-                $p = $event->getPlayer();
-		$nm=$p->getName();
+                $nm = $event->getPlayer()->getName();
 		foreach($this->klist as $id=>$pl){
 			if($pl==$nm){
 				unset($this->klist[$id]);
