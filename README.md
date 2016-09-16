@@ -1,7 +1,7 @@
 # MyNPC
 
 一個高級的打人NPC 擁有超強的運作能力，並且不斷的更新，打破你對NPC的想法。基于GPL协议开源
-
+-注意，当前仅支持php5.
 指令
 - /npc 重新reload個新的npc
 - /new 添加新的NPC
