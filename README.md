@@ -1,6 +1,6 @@
 # MyNPC
 
-一個高級的打人NPC 擁有超強的運作能力，並且不斷的更新，打破你對NPC的想法
+一個高級的打人NPC 擁有超強的運作能力，並且不斷的更新，打破你對NPC的想法。基于GPL协议开源
 
 指令
 - /npc 重新reload個新的npc
@@ -55,3 +55,5 @@ Donate url: https://pl.zxda.net/plugins/511.html
 
 - We are from China and Taiwan
 
+#致谢
+感谢RexRed6802对本插件的维护
