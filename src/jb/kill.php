@@ -35,339 +35,125 @@ use pocketmine\nbt\tag\ListTag;
 use pocketmine\nbt\tag\FloatTag;
 use pocketmine\nbt\tag\ShortTag;
 use pocketmine\nbt\tag\ByteTag;
+use pocketmine\nbt\tag\IntTag;
+use pocketmine\metadata\Metadatable;
+use pocketmine\metadata\MetadataValue;
 
-if (substr(PHP_VERSION, 0, 1) == '5') {
-	define('p7x',false);
-	define('p5x',true);
-	}else{
-	define('p7x',true);
-	define('p5x',false);
-	echo 'php7';
-}
 class kill extends PluginBase implements Listener{
 
-public function xxo(EntityDamageEvent $e){
-	if ($e instanceof EntityDamageByEntityEvent){
-	if(($p=$e->getDamager()) instanceof Player){
-		$et=$e->getEntity();
-		if($et->getDataProperty("fuck")==null) return;
-		if (!array_key_exists($et->getId(),$this->elist)) return;
-		$this->klist[$et->getId()]=$p->getName();
-		//echo count($this->klist);
-		//$et->setNameTag($this->cachec[$et->getId()]["nt"]."  HP:".$et->getHealth()."/".$et->getMaxHealth());
-	}
-	}
-	
-	
+public function onEnable(){
+    $this->klist=[];
+		$this->elist=[];
+		$this->cachec=[];
+		$this->rep=1;
+		$this->getServer()->getPluginManager()->registerEvents($this, $this);
+		
+		@mkdir($this->getDataFolder());
+       
+		$this->c=new Config($this->getDataFolder()."cfg.yml",Config::YAML,array());
+		$this->setting=new Config($this->getDataFolder()."setting.yml",Config::YAML,array());
+    $this->cachec=$this->c->getAll();
+
+			$this->getLogger()->info(TextFormat::WHITE . "插件已启用！");
+		$this->getLogger()->info(TextFormat::BLUE . "===========================");
+		$this->getLogger()->info(TextFormat::YELLOW . "本插件由@CreeperGo编写，谢谢chenxiaoyi 的创意和支持 部分更新來自RexRed6802");
+		$this->getLogger()->info(TextFormat::BLUE  . "---------------------------");
+      Entity::registerEntity(NPC::class);
 }
-	public function dop($prop,$e){
+
+	public function dop($entity,$event){
 		$it=[];
-		foreach($this->cachec[$e->getEntity()->getId()]["drops"] as $k){
+		foreach($this->cachec[$entity->getNameTag()]["drops"] as $k){
 			$tm=explode(":",$k);
 			if(mt_rand(0,100)<$tm[2]){
 			$it=array_merge(array(new Item($tm[0],0,$tm[1])),$it);
 			}
 		}
-		$e->setDrops($it);
+		$event->setDrops($it);
 	}
-	public function spaw($x,$y,$z,$tp,$level,$hp,$sk){
-	
-	 $nbt = new CompoundTag;
-     
-    $motion = new Vector3(0,0,0);
-$nbt->Skin = new CompoundTag("Skin", [
-          "Data" => new StringTag("Data", $sk),
-        ]);
-        $nbt->Pos = new ListTag("Pos", [
-         
-           new DoubleTag("", $x),
-           new DoubleTag("", $y),
-           new DoubleTag("", $z)
-         
-        ]);
 
-        $nbt->Motion = new ListTag("Motion", [
-         
-           new DoubleTag("", $motion->x),
-           new DoubleTag("", $motion->y),
-           new DoubleTag("", $motion->z)
-         
-        ]);
-     
-        $nbt->Rotation = new ListTag("Rotation", [
-         
-            new FloatTag("", 90),
-            new FloatTag("", 90)
-         
-        ]);
-     
-        $nbt->Health = new ShortTag("Health", $hp);
-	 $a=Entity::createEntity($tp, $level->getChunk($x>>4, $z>>4),$nbt);
-	 $a->setMaxHealth($hp);
-	 $a->setHealth($hp);
-	 $a->spawnToAll();
-	 return $a;
-}
- public function onCommand(CommandSender $s, Command $cd, $label, array $a){
-	 if($cd=="npc"){
-		foreach($this->getServer()->getOnlinePlayers() as $j){
-			$skin=$j->getSkinData();
-			//$sks=$j->isSkinSlim();
-			break;
-		}
-		 $pe=$this->c->get($a[0]);
-		 if($pe==null) return;
-//if($this->getServer()->getPlayer($s->getName())!=null){
-	//$skin = $s->getSkinData();
-   // $sks = $s->isSkinSlim();
-	
-	//$p=$this->getServer()->getPlayer($s->getName());
-	/*
-	$pos=$p->getPosition();
-	$x=$pos->getX();
-	$y=$pos->getY();
-	$z=$pos->getZ();
-	*/
-	$sn=$this->sk->get($a[0]);
-$et=$this->spaw($pe["x"],$pe["y"],$pe["z"],$pe["name"],$this->getServer()->getLevel($pe["lid"]),$pe["health"],$skin);
-$et->setDataProperty("fuck",1,$pe["npc"]);
-//$et->setDataProperty("kq",1,$a[0]);
-$this->cachec[$et->getId()]=$pe;
-$et->setNameTag($pe["nt"]);
-//$et->setDataProperty("jtag",4,$pe["nt"]);
-$this->elist[$et->getId()]=$et;
-$s->sendMessage("完成！！");
-//}
-return;
-	 }
-	 if($cd=="new"){    
- $p=$s;
-		 $pos=$p->getPosition();
-		 $dat=[];
-		 $dat["x"]=$pos->getX();
-		 $dat["y"]=$pos->getY();
-		 $dat["z"]=$pos->getZ();
-		 $dat["lid"]=$pos->getLevel()->getId();
-		 $dat["name"]="Human";
-		 $dat["health"]=20;
-		 $dat["nt"]="傻逼npc";
-		 $dat["npc"]=$a[1];
-		 $dat["drops"]=array("2:2:50","8:2:10");
-		 $dat["伤害"]=4;
-		 $dat["死亡指令"]="say {player}";
-		 $dat["仇恨范围"]=10;
-		  $dat["speed"]=6;
-		 $this->c->set($a[0],$dat);
-		 $this->c->save();
-		 $s->sendMessage("done");
-	 }
-	 else
-	 {
-		 $this->rep=$a[0];
-	 }
-}
-
-
-	public function onEnable(){
-		$this->klist=[];
-		$this->elist=[];
-		$this->cachec=[];
-		$this->rep=1;
-			$this->getServer()->getPluginManager()->registerEvents($this, $this);
-		
-		@mkdir($this->getDataFolder());
-       
-		$this->c=new Config($this->getDataFolder()."cfg.yml",Config::YAML,array());
-		$this->sk=new Config($this->getDataFolder()."fuck.yml",Config::YAML,array());
-			$this->getLogger()->info(TextFormat::WHITE . "插件已启用！");
-		$this->getLogger()->info(TextFormat::BLUE . "===========================");
-		$this->getLogger()->info(TextFormat::YELLOW . "本插件由@CreeperGo编写，谢谢chenxiaoyi 的创意和支持");
-		$this->getLogger()->info(TextFormat::BLUE  . "---------------------------");
-		
- $sh=$this->getServer()->getScheduler();
- $sh->scheduleRepeatingTask(new jb($this),4);
-    }
-	public function onRespawn(PlayerRespawnEvent $event){
-		echo "cAADSADSADSXD";
-                $nm = $event->getPlayer()->getName();
-		foreach($this->klist as $id=>$pl){
-			if($pl==$nm){
-				unset($this->klist[$id]);
-			}
-		}
-	}
-        public function onQuit(PlayerQuitEvent $event){
-		echo "cAADSADSADSXD";
-                $nm = $event->getPlayer()->getName();
-		foreach($this->klist as $id=>$pl){
-			if($pl==$nm){
-				unset($this->klist[$id]);
-			}
-		}
-	}
-        public function gc(EntityDeathEvent $event){
+public function onEntityDeath(EntityDeathEvent $event){
 	$entity = $event->getEntity();
-        	$cause = $entity->getLastDamageCause();
-		
-			if($cause instanceof EntityDamageByEntityEvent){
-	
-            $killer = $cause->getDamager();
-			if($killer instanceof Player){}else{$killer=$entity;}
-			}
-	$entity = $event->getEntity();
-	//if($entity instanceof Player){
-		
-		//return;
-	//}
-    if($entity->getDataProperty("fuck")!=0){
-		$this->getServer()->dispatchCommand(new ConsoleCommandSender,str_replace("{player}",$killer->getName(),$this->cachec[$entity->getId()]["死亡指令"]));
-		$this->dop($entity->getDataProperty("fuck"),$event);
-		$this->getServer()->broadcastMessage("{$killer->getName()}擊殺了....todo...npc nametag");
-			unset($this->klist[$entity->getId()]);
-		unset($this->elist[$entity->getId()]);
+  $cause = $entity->getLastDamageCause();
+  	if($cause instanceof EntityDamageByEntityEvent){
+    	$killer = $cause->getDamager();
+	  		if($killer instanceof Player){
+         }else{
+         $killer=$entity;
+       }
+	 	}
+    if(isset($entity->namedtag->npc) and $entity->namedtag->npc=="true"){
+		$this->getServer()->dispatchCommand(new ConsoleCommandSender,str_replace("{player}",$killer->getName(),$this->cachec[$entity->getNameTag()]["command"]));
+		$this->dop($entity,$event);
+		unset($entity->target);
 		if($this->rep==1){
-		$pe=$this->cachec[$entity->getId()];
-		foreach($this->getServer()->getOnlinePlayers() as $j){
-			$skin=$j->getSkinData();
-			//$sks=$j->isSkinSlim();
-			break;
-		}
-		$et=$this->spaw($pe["x"],$pe["y"],$pe["z"],$pe["name"],$this->getServer()->getLevel($pe["lid"]),$pe["health"],$skin);
-$et->setDataProperty("fuck",1,$pe["npc"]);
-//$et->setDataProperty("kq",1,$a[0]);
-$this->cachec[$et->getId()]=$pe;
-$et->setNameTag($pe["nt"]);
-//$et->setDataProperty("jtag",4,$pe["nt"]);
-$this->elist[$et->getId()]=$et;
-}
-unset($this->cachec[$entity->getId()]);
-
-	}
-	
-	
-	
+		$pe = $this->cachec[$entity->getNameTag()];
+		$et = $this->spaw($pe);
 }
 }
-class jb extends PluginTask
-{
-    public $p;
+}
 
-    public function __construct(kill $plugin)
-    {
-        parent::__construct($plugin);
-        $this->p = $plugin;
-		$this->dm=$plugin->c->get("dm");
-			$this->sh=$plugin->c->get("knock");
-    }
-
-    public function onRun($currentTick)
-    {   
-	$p=$this->p;
-	$s=$p->getServer();
-	
-     foreach($p->klist as $name=>$ply){
-		
-		 if(($pl=$s->getPlayer($ply))!=null){
-	if (!array_key_exists($name,$p->elist)) continue; 
-	
-			 $ent=$p->elist[$name];
-    $ent->setNameTag($p->cachec[$ent->getId()]["nt"]."  HP:".$ent->getHealth()."/".$ent->getMaxHealth());
-	
-			  $spawn = new Vector3($p->cachec[$ent->getId()]["x"],$p->cachec[$ent->getId()]["y"],$p->cachec[$ent->getId()]["z"]);
-			 if($pl->distance($ent) > $p->cachec[$ent->getId()]["仇恨范围"] || $ent->distance($spawn) > $p->cachec[$ent->getId()]["仇恨范围"] ){echo "raise event";$this->BackToSpawn($ent); continue; }
-					//$add=0.15;
-				$y=$pl->y-$ent->y;
-				$x=$pl->x-$ent->x;
-				$atn = atan2($z, $x);
-			if($p->elist[$name]->getDataProperty("fuck")==1){
-				$ent=$p->elist[$name];
-				$px=$pl->getPosition();
-				
-				
-				if($ent->distance(new Vector3($px->getX(),$px->getY(),$px->getZ())) <= 0.8){
-				$ev = new EntityDamageByEntityEvent($ent, $pl, EntityDamageEvent::CAUSE_ENTITY_ATTACK, $p->cachec[$ent->getId()]["伤害"],0.5);
-				$pl->attack($ev->getFinalDamage(), $ev);
-					//$ent->setRotation(rad2deg($atn -M_PI_2),rad2deg(-atan2($y, sqrt($x ** 2 + $z ** 2))));
-					
-			    } 
-			    else
-			    {
-						$sp=$p->cachec[$ent->getId()]["speed"];
-					
-			   // $ent->move(cos($atn = atan2($z, $x)) * $add,0, sin($atn) * $add);
-            /*$ent->yaw = rad2deg($atn -M_PI_2);
-            $ent->pitch = rad2deg(-atan2($y, sqrt($x ** 2 + $z ** 2)));*/
-				$ent->move(($px->x-$ent->x)/$sp,($px->y-$ent->y)/$sp,($px->z-$ent->z)/$sp);
-				//$ent->setRotation(rad2deg($atn -M_PI_2),rad2deg(-atan2($y, sqrt($x ** 2 + $z ** 2))));
-		
-			    }
-				$ent->setRotation(rad2deg($atn -M_PI_2),rad2deg(-atan2($y, sqrt($x ** 2 + $z ** 2))));
-              continue; 
-			
-		 }
-		 //$px=$pl->getPosition();
-		 $ent->setRotation(rad2deg($atn -M_PI_2),rad2deg(-atan2($y, sqrt($x ** 2 + $z ** 2))));
-		     if(mt_rand(1, 27) < 4 && $ent->distance($pl) <= 10){
-            $f = 1.8;
-            $yaw = $ent->yaw + mt_rand(-180, 180) / 10;
-            $pitch = $ent->pitch + mt_rand(-90, 90) / 10;
-            $nbt = new CompoundTag("", [
-                "Pos" => new ListTag("Pos", [
-                    new DoubleTag("", $ent->x),
-                    new DoubleTag("", $ent->y + 1.62),
-                    new DoubleTag("", $ent->z)
-                ]),
-                "Motion" => new ListTag("Motion", [
-                    new DoubleTag("", -sin($yaw / 180 * M_PI) * cos($pitch / 180 * M_PI) * $f),
-                    new DoubleTag("", -sin($pitch / 180 * M_PI) * $f),
-                    new DoubleTag("", cos($yaw / 180 * M_PI) * cos($pitch / 180 * M_PI) * $f)
-                ]),
-                "Rotation" => new ListTag("Rotation", [
-                    new FloatTag("", $yaw),
-                    new FloatTag("", $pitch)
-                ]),
+public function spaw(string $name,$level){
+     $motion = new Vector3(0,0,0);
+     $data = $this->cachec[$name];
+     $nbt = new CompoundTag("", [
+            "Pos" => new ListTag("Pos", [
+                new DoubleTag("", $data["x"]),
+                new DoubleTag("", $data["y"]),
+                new DoubleTag("", $data["z"])
+            ]),
+            "Motion" => new ListTag("Motion", [
+                new DoubleTag("", 0),
+                new DoubleTag("", 0),
+                new DoubleTag("", 0)
+            ]),
+            "Rotation" => new ListTag("Rotation", [
+                new FloatTag("", 0),
+                new FloatTag("", 0)
+            ]),
+			"spawnPos" => new ListTag("spawnPos", [
+                new DoubleTag("", $data["x"]),
+                new DoubleTag("", $data["y"]),
+                new DoubleTag("", $data["z"])
+            ]),
+			"range" => new FloatTag("range",$data["range"] * $data["range"]),
+			"attackDamage" => new FloatTag("attackDamage",$data["damage"]),
+			"networkId" => new IntTag("networkId",63),
+			"speed" => new FloatTag("speed",$data["speed"]),
+			"skin" => new StringTag("skin",$data["skin"]),
+      "heldItem"=> new StringTag("heldItem",$data["heldItem"])
             ]);
-            $arrow = Entity::createEntity("Arrow", $ent->chunk, $nbt, $ent);
-            $ev = new EntityShootBowEvent($ent, Item::get(Item::ARROW, 0, 1), $arrow, $f);
-
-            $s->getPluginManager()->callEvent($ev);
-
-            $projectile = $ev->getProjectile();
-            if($ev->isCancelled()){
-                $ev->getProjectile()->kill();
-            }elseif($projectile instanceof Projectile){
-                $s->getPluginManager()->callEvent($launch = new ProjectileLaunchEvent($projectile));
-                if($launch->isCancelled()){
-                    $projectile->kill();
-                }else{
-                    $projectile->spawnToAll();
-                   
-                }
-            }
-        }
-		else
-		{
-			$sp=$p->cachec[$ent->getId()]["speed"];
-				$ent->move(($pl->x-$ent->x)/$sp,($pl->y-$ent->y)/$sp,($pl->z-$ent->z)/$sp);
-		}
-	 }
-    }
+	 $entity=Entity::createEntity("NPC", $level->getChunk($x>>4, $z>>4),$nbt);
+	$entity->setMaxHealth($this->cachec[$name]["health"]);
+	$entity->setHealth($this->cachec[$name]["health"]);
+   $entity->setNameTag($name);
+	 $entity->spawnToAll();
+	 return $entity;
 }
-
-public function BackToSpawn($ent){
-foreach($p->klist as $name=>$ply){
-
-$spawn = new Vector3($p->cachec[$ent->getId()]["x"],$p->cachec[$ent->getId()]["y"],$p->cachec[$ent->getId()]["z"]);
-$s->getPlayer($ply)->sendMessage("已離開攻擊範圍");
-$ent->setPosition($spawn);
-$this->heal($ent);
-unset($p->klist[$ent->getId()]);
-continue;
+ public function onCommand(CommandSender $sender, Command $cmd, $label, array $args){
+		if($cmd == "new"){				
+          $sender->sendMessage("test1");
+          $held = $sender->getInventory()->getItemInHand();
+					$this->c->set($args[0],array(
+            "x"=>$sender->x,
+            "y"=>$sender->y,
+            "z"=>$sender->z,
+            "level"=>$sender->level->getName(),
+            "health"=>20,
+            "range"=>10,
+            "damage"=>1,
+            "speed"=>1,
+            "drops"=>"1;2;3",
+            "heldItem"=>"{$held->getId()}:{$held->getDamage()}:{$held->getCount()}",
+            "command"=>"/say player",
+            "skin"=>bin2hex($sender->getSkinData())
+            ));
+          $sender->sendMessage("test2");
+					$this->c->save();
+					$this->spaw($args[0],$sender->level);
+         $sender->sendMessage("test3");
+					$sender->sendMessage("成功新增npc: $args[0]");
+				}
 }
-}
-
-public function heal($ent){
-$ent->setHealth((int)$p->cachec[$ent->getId()]["health"]);
-}
-
+        
 }
