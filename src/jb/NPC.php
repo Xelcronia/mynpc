@@ -132,16 +132,16 @@ if($this->knockbackTicks > 0) $this->knockbackTicks--;
 				$atn = atan2($z, $x);
 				$ppos=$player->getPosition();
 				  if($this->distance(new Vector3($ppos->getX(),$player->getY(),$ppos->getZ())) <= 0.8){
-		          $this->move($x/2,$y,$z/2);
+		          $this->move($x/5,$y/1.5,$z/5);
 		     	$ev = new EntityDamageByEntityEvent($this, $this->target, EntityDamageEvent::CAUSE_ENTITY_ATTACK, $this->attackDamage);
 						$player->attack($ev->getFinalDamage(), $ev);
 					 }else{
 						$speed = $this->plugin->cachec[$this->getNameTag()]["speed"];
 				    $this->setRotation(rad2deg($atn -M_PI_2),rad2deg(-atan2($y, sqrt($x ** 2 + $z ** 2))));
             if($this->y > $player->y){
-           $this->move($x/2,$y,$z/2);
+           $this->move($x/5,$y/1.5,$z/5);
           }elseif($this->y = $player->y){
-          $this->move($x/2,$y,$z/2);
+          $this->move($x/5,$y/1.5,$z/5);
       }
      }
      }
