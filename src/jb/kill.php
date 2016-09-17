@@ -2,7 +2,6 @@
 
 namespace jb;
 
-use pocketmine\scheduler\PluginTask;
 use pocketmine\Server;
 use pocketmine\utils\TextFormat;
 use pocketmine\plugin\PluginBase;
@@ -20,14 +19,6 @@ use pocketmine\math\Vector3;
 use pocketmine\event\Listener;
 use pocketmine\utils\Config;
 use pocketmine\event\entity\EntityDeathEvent;
-use pocketmine\event\player\PlayerRespawnEvent;
-use pocketmine\event\entity\EntityDamageByEntityEvent;
-use pocketmine\event\entity\EntityDamageEvent;
-use pocketmine\entity\Projectile;
-use pocketmine\event\entity\EntityShootBowEvent;
-use pocketmine\event\entity\ProjectileLaunchEvent;
-use pocketmine\event\player\PlayerJoinEvent;
-use pocketmine\event\player\PlayerQuitEvent;
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\nbt\tag\StringTag;
 use pocketmine\nbt\tag\DoubleTag;
@@ -36,15 +27,11 @@ use pocketmine\nbt\tag\FloatTag;
 use pocketmine\nbt\tag\ShortTag;
 use pocketmine\nbt\tag\ByteTag;
 use pocketmine\nbt\tag\IntTag;
-use pocketmine\metadata\Metadatable;
-use pocketmine\metadata\MetadataValue;
 
 class kill extends PluginBase implements Listener{
 
 public function onEnable(){
-    $this->klist=[];
-		$this->elist=[];
-		$this->cachec=[];
+  
 		$this->rep=1;
 		$this->getServer()->getPluginManager()->registerEvents($this, $this);
 		
@@ -54,11 +41,11 @@ public function onEnable(){
 		$this->setting=new Config($this->getDataFolder()."setting.yml",Config::YAML,array());
     $this->cachec=$this->c->getAll();
 
-			$this->getLogger()->info(TextFormat::WHITE . "插件已启用！");
+		$this->getLogger()->info(TextFormat::WHITE . "插件已启用！");
 		$this->getLogger()->info(TextFormat::BLUE . "===========================");
 		$this->getLogger()->info(TextFormat::YELLOW . "本插件由@CreeperGo编写，谢谢chenxiaoyi 的创意和支持 部分更新來自RexRed6802");
 		$this->getLogger()->info(TextFormat::BLUE  . "---------------------------");
-      Entity::registerEntity(NPC::class);
+                Entity::registerEntity(NPC::class);
 }
 
 	public function dop($entity,$event){
