@@ -70,17 +70,18 @@ public function onEntityDeath(EntityDeathEvent $event){
        }
 	 	}
     if(isset($entity->namedtag->npc) and $entity->namedtag->npc=="true"){
+                $killer = $cause->getDamager();
 		$this->getServer()->dispatchCommand(new ConsoleCommandSender,str_replace("{player}",$killer->getName(),$this->cachec[$entity->getNameTag()]["command"]));
 		$this->dop($entity,$event);
 		unset($entity->target);
 		if($this->rep==1){
-		$pe = $this->cachec[$entity->getNameTag()];
+		$pe = $this->cachec[$entity->getNameTag()]["name"];
 		$et = $this->spaw($pe,$entity->getLevel());
 }
 }
 }
 
-public function spaw(string $name,$level){
+public function spaw($name,$level){
      $motion = new Vector3(0,0,0);
      $data = $this->cachec[$name];
      $nbt = new CompoundTag("", [
@@ -122,6 +123,7 @@ public function spaw(string $name,$level){
           $sender->sendMessage("test1");
           $held = $sender->getInventory()->getItemInHand();
 					$this->c->set($args[0],array(
+            "name"=>$args[0],
             "x"=>$sender->x,
             "y"=>$sender->y,
             "z"=>$sender->z,
