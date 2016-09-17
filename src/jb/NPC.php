@@ -121,6 +121,7 @@ class NPC extends Creature{
 	public function onUpdate($currentTick = 1){
 if($this->knockbackTicks > 0) $this->knockbackTicks--;
 		if(($player = $this->target) && $player->isAlive()){
+                if(isset($this->target) and $this->target ===null) unset($this->target);
 			if($this->distanceSquared($this->spawnPos) > $this->range){
 				$this->setPosition($this->spawnPos);
 				$this->setHealth($this->getMaxHealth());
