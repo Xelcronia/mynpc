@@ -111,11 +111,11 @@ public function spaw($name,$level){
 			"skin" => new StringTag("skin",$data["skin"]),
       "heldItem"=> new StringTag("heldItem",$data["heldItem"])
             ]);
-	 $entity=Entity::createEntity("NPC", $level->getChunk($x>>4, $z>>4),$nbt);
+	$entity=Entity::createEntity("NPC", $level->getChunk($x>>4, $z>>4),$nbt);
 	$entity->setMaxHealth($this->cachec[$name]["health"]);
 	$entity->setHealth($this->cachec[$name]["health"]);
-   $entity->setNameTag($name);
-	 $entity->spawnToAll();
+        $entity->setNameTag($name);
+	$entity->spawnToAll();
 	 return $entity;
 }
  public function onCommand(CommandSender $sender, Command $cmd, $label, array $args){
@@ -134,7 +134,7 @@ public function spaw($name,$level){
             "speed"=>1,
             "drops"=>"1;2;3",
             "heldItem"=>"{$held->getId()}:{$held->getDamage()}:{$held->getCount()}",
-            "command"=>"/say player",
+            "command"=>"say {player}",
             "skin"=>bin2hex($sender->getSkinData())
             ));
           $sender->sendMessage("test2");
