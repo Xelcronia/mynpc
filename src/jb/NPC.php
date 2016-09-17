@@ -139,10 +139,11 @@ if($this->knockbackTicks > 0) $this->knockbackTicks--;
 					 }else{
 						$speed = $this->plugin->cachec[$this->getNameTag()]["speed"];
 				    $this->setRotation(rad2deg($atn -M_PI_2),rad2deg(-atan2($y, sqrt($x ** 2 + $z ** 2))));
-            if($this->y > $player->y){
-           $this->move($x/5,$y/1.5,$z/5);
-          }elseif($this->y = $player->y){
           $this->move($x/5,$y/1.5,$z/5);
+        if(mt_rand(0,4) > 2){
+        $this->setSneaking(true);
+         }else{
+        $this->setSneaking(false);
       }
      }
      }
