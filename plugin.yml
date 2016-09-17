@@ -1,22 +1,10 @@
 name: mynpc
 main: jb\kill
-version: 1.0.3
+version: 1.0.4
 api: [1.0.0]
 load: POSTWORLD
-author: cpera
+author: cpera/RexRed
 commands:
-  npc:
-    description: orz
-    usage: "/npc <gm/add/world/remove>"
-    permission: fuckbear.xxo
   new:
     description: orz
     usage: "/new <gm/add/world/remove>"
-    permission: fuckbear.xxo
-permissions:
-  fuckbear.xxo:
-    description: "oo"
-    default: op
-  fuckbear.xxp:
-    description: "oo"
-    default: true
