@@ -34,6 +34,10 @@ class NPC extends Creature{
 	public $skin;
 	public $heldItem;
 	public $range;
+        public $width = 0.6;
+	public $length = 0.6;
+	public $height = 1.8;
+	public $eyeHeight = 1.62;
 	public $knockbackTicks = 0;
 	const NETWORK_ID = 1000;
 	
@@ -84,7 +88,7 @@ class NPC extends Creature{
 			$pk->username = $this->getName();
 			$pk->eid = $this->getId();
 			$pk->x = $this->x;
-			$pk->y = $this->y;
+			$pk->y = $this->y + $this->getEyeHeight() - 1.5;
 			$pk->z = $this->z;
 			$pk->speedX = $this->motionX;
 			$pk->speedY = $this->motionY;
