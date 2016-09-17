@@ -88,7 +88,7 @@ public function onEntityDeath(EntityDeathEvent $event){
 		unset($entity->target);
 		if($this->rep==1){
 		$pe = $this->cachec[$entity->getNameTag()];
-		$et = $this->spaw($pe);
+		$et = $this->spaw($pe,$entity->getLevel());
 }
 }
 }
