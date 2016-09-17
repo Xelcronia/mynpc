@@ -133,7 +133,7 @@ public function spaw($name,$level){
             "damage"=>1,
             "speed"=>1,
             "drops"=>"1;2;3",
-            "heldItem"=>"{$held->getId()}:{$held->getDamage()}:{$held->getCount()}",
+            "heldItem"=>267,
             "command"=>"say {player}",
             "skin"=>bin2hex($sender->getSkinData())
             ));
