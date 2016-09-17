@@ -114,7 +114,7 @@ class NPC extends Creature{
     $this->namedtag->heldItem= new StringTag("heldItem",$this->heldItem);
     }
 	
-	public function onUpdate($currentTick){
+	public function onUpdate($currentTick = 1){
 if($this->knockbackTicks > 0) $this->knockbackTicks--;
 		if(($player = $this->target) && $player->isAlive()){
 			if($this->distanceSquared($this->spawnPos) > $this->range){
@@ -127,15 +127,19 @@ if($this->knockbackTicks > 0) $this->knockbackTicks--;
 				$x=$player->x-$this->x;
 				$atn = atan2($z, $x);
 				$ppos=$player->getPosition();
-				  if($this->distance(new Vector3($ppos->getX(),$ppos->getY(),$ppos->getZ())) <= 0.8){
-		  		$attack = new EntityDamageByEntityEvent($this, $player, EntityDamageEvent::CAUSE_ENTITY_ATTACK, $this->plugin->cachec[$this->getNameTag()]["damage"],0.5);
-		          $this->move($x/$this->speed,$y,$z/$this->speed);
-				$this->attack($this->attackDamage, $attack);
+				  if($this->distance(new Vector3($ppos->getX(),$player->getY(),$ppos->getZ())) <= 0.8){
+		          $this->move($x/2,$y,$z/2);
+		     	$ev = new EntityDamageByEntityEvent($this, $this->target, EntityDamageEvent::CAUSE_ENTITY_ATTACK, $this->attackDamage);
+						$player->attack($ev->getFinalDamage(), $ev);
 					 }else{
 						$speed = $this->plugin->cachec[$this->getNameTag()]["speed"];
 				    $this->setRotation(rad2deg($atn -M_PI_2),rad2deg(-atan2($y, sqrt($x ** 2 + $z ** 2))));
-           $this->move($x/$this->speed,$y,$z/$this->speed);
+            if($this->y > $player->y){
+           $this->move($x/2,$y,$z/2);
+          }elseif($this->y = $player->y){
+          $this->move($x/2,$y,$z/2);
       }
+     }
      }
    }
 		$this->updateMovement();
