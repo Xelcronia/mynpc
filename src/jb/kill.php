@@ -28,6 +28,7 @@ use pocketmine\nbt\tag\ShortTag;
 use pocketmine\nbt\tag\ByteTag;
 use pocketmine\nbt\tag\IntTag;
 
+
 class kill extends PluginBase implements Listener{
 
 public function onEnable(){
@@ -70,7 +71,7 @@ public function onEntityDeath(EntityDeathEvent $event){
        }
 	 	}
     if(isset($entity->namedtag->npc) and $entity->namedtag->npc=="true"){
-                $killer = $cause->getDamager();
+         $killer = $cause->getDamager();
 		$this->getServer()->dispatchCommand(new ConsoleCommandSender,str_replace("{player}",$killer->getName(),$this->cachec[$entity->getNameTag()]["command"]));
 		$this->dop($entity,$event);
 		unset($entity->target);
@@ -83,7 +84,7 @@ public function onEntityDeath(EntityDeathEvent $event){
 
 public function spaw($name,$level){
      $motion = new Vector3(0,0,0);
-     $data = $this->cachec[$name];
+     $data = $this->c->get($name);
      $nbt = new CompoundTag("", [
             "Pos" => new ListTag("Pos", [
                 new DoubleTag("", $data["x"]),
@@ -109,13 +110,14 @@ public function spaw($name,$level){
 			"networkId" => new IntTag("networkId",63),
 			"speed" => new FloatTag("speed",$data["speed"]),
 			"skin" => new StringTag("skin",$data["skin"]),
-      "heldItem"=> new StringTag("heldItem",$data["heldItem"])
+            "heldItem"=> new StringTag("heldItem",$data["heldItem"]),
+            "type" => new StringTag("type",$data["type"])
             ]);
-	$entity=Entity::createEntity("NPC", $level->getChunk($x>>4, $z>>4),$nbt);
-	$entity->setMaxHealth($this->cachec[$name]["health"]);
-	$entity->setHealth($this->cachec[$name]["health"]);
-        $entity->setNameTag($name);
-	$entity->spawnToAll();
+	  $entity=Entity::createEntity("NPC",$level->getChunk($data["x"] >> 4,$data["z"] >> 4,true),$nbt);
+  	$entity->setMaxHealth($this->c->get($name)["health"]);
+  	$entity->setHealth($this->c->get($name)["health"]);
+      $entity->setNameTag($name);
+	  $entity->spawnToAll();
 	 return $entity;
 }
  public function onCommand(CommandSender $sender, Command $cmd, $label, array $args){
@@ -123,26 +125,34 @@ public function spaw($name,$level){
           $sender->sendMessage("test1");
           $held = $sender->getInventory()->getItemInHand();
 					$this->c->set($args[0],array(
-            "name"=>$args[0],
+	    	    "name"=>$args[0],
             "x"=>$sender->x,
             "y"=>$sender->y,
             "z"=>$sender->z,
+            "type"=>$args[1],
             "level"=>$sender->level->getName(),
             "health"=>20,
             "range"=>10,
             "damage"=>1,
             "speed"=>1,
             "drops"=>"1;2;3",
-            "heldItem"=>267,
-            "command"=>"say {player}",
+            "heldItem"=>"276",
+            "command"=>"/say player",
             "skin"=>bin2hex($sender->getSkinData())
             ));
           $sender->sendMessage("test2");
 					$this->c->save();
-					$this->spaw($args[0],$sender->level);
-         $sender->sendMessage("test3");
+					$this->spaw($args[0],$sender->getLevel());
+          $sender->sendMessage("test3");
 					$sender->sendMessage("成功新增npc: $args[0]");
-				}
+				}elseif($cmd == "clean"){
+					foreach($this->getServer()->getLevels() as $level){
+				    foreach($level->getEntities() as $entity){
+					if($entity instanceof Human and isset($entity->namedtag->npc)) $entity->close();
+					$sender->sendMessage("test4");
+					   }
+						}
+}
 }
         
 }
