@@ -20,6 +20,8 @@ use pocketmine\item\Item;
 use pocketmine\math\Vector3;
 use pocketmine\network\protocol\AddEntityPacket;
 use pocketmine\network\protocol\AddPlayerPacket;
+use pocketmine\network\protocol\SetEntityMotionPacket;
+use pocketmine\scheduler\CallbackTask;
 
 class NPC extends Creature{
 	
@@ -34,11 +36,12 @@ class NPC extends Creature{
 	public $skin;
 	public $heldItem;
 	public $range;
-        public $width = 0.6;
+  public $width = 0.6;
 	public $length = 0.6;
 	public $height = 1.8;
 	public $eyeHeight = 1.62;
 	public $knockbackTicks = 0;
+  public $a;
 	const NETWORK_ID = 1000;
 	
 	public function __construct($chunk,$nbt){
@@ -49,9 +52,9 @@ class NPC extends Creature{
 		$this->attackDamage = $this->namedtag["attackDamage"];
 		$this->speed = $this->namedtag["speed"];
 		$this->skin = $this->namedtag["skin"];
-                $heldItem = $this->namedtag["heldItem"];
-		$this->heldItem = new Item($heldItem,0,0);
+		$this->heldItem = new Item($this->namedtag->heldItem,0,1);
     $this->npc = "true";
+    $this->type = $this->namedtag["type"];
 	}
 	
 	public function initEntity(){
@@ -116,12 +119,15 @@ class NPC extends Creature{
 		$this->namedtag->skin = new StringTag("skin",$this->skin);
     $this->namedtag->npc = new StringTag("npc","true");
     $this->namedtag->heldItem= new StringTag("heldItem",$this->heldItem);
+    $this->namedtag->type = new StringTag("type",$this->type);
     }
 	
 	public function onUpdate($currentTick = 1){
-if($this->knockbackTicks > 0) $this->knockbackTicks--;
+    switch($this->type){
+      case 1:
+    if($this->knockbackTicks > 0) $this->knockbackTicks--;
 		if(($player = $this->target) && $player->isAlive()){
-                if(isset($this->target) and $this->target ===null) unset($this->target);
+			if(isset($this->target) and ($this->target ===null)) unset($this->target);
 			if($this->distanceSquared($this->spawnPos) > $this->range){
 				$this->setPosition($this->spawnPos);
 				$this->setHealth($this->getMaxHealth());
@@ -133,20 +139,58 @@ if($this->knockbackTicks > 0) $this->knockbackTicks--;
 				$atn = atan2($z, $x);
 				$ppos=$player->getPosition();
 				  if($this->distance(new Vector3($ppos->getX(),$player->getY(),$ppos->getZ())) <= 0.8){
-		          $this->move($x/5,$y/1.5,$z/5);
+		          $this->move($x/5,$y/2,$z/5);
 		     	$ev = new EntityDamageByEntityEvent($this, $this->target, EntityDamageEvent::CAUSE_ENTITY_ATTACK, $this->attackDamage);
 						$player->attack($ev->getFinalDamage(), $ev);
 					 }else{
-						$speed = $this->plugin->cachec[$this->getNameTag()]["speed"];
 				    $this->setRotation(rad2deg($atn -M_PI_2),rad2deg(-atan2($y, sqrt($x ** 2 + $z ** 2))));
-          $this->move($x/5,$y/1.5,$z/5);
-        if(mt_rand(0,4) > 2){
-        $this->setSneaking(true);
-         }else{
-        $this->setSneaking(false);
+          $this->move($x/5,$y/2,$z/5);
+          if(mt_rand(0,4) == 0){
+         $this->setSneaking(true);
+          }elseif(mt_rand(0,4) == 4){
+          $this->setSneaking(false);
       }
      }
      }
+   }
+      break;
+      case 2:
+      $x = $this->x;$y = $this->y;$z = $this->z;
+      $a = null;
+      if($a = null){
+      $a = "b";
+      }
+      if($this->getLevel()->getBlockIdAt($x + 1.2,$y,$z) !== 0){
+      $a = "b";
+      }elseif($this->getLevel()->getBlockIdAt($x-1.2,$y,$z) !== 0){
+      $a = "c";
+      }elseif($this->getLevel()->getBlockIdAt($x,$y,$z-1.2) !== 0){
+      $a = "d";
+     }elseif($this->getLevel()->getBlockIdAt($x,$y,$z+1.2) !== 0){
+      $a = "e";
+     }elseif($this->getLevel()->getBlockIdAt($x+1.2,$y,$z+1.2) !== 0){
+      $a = "f";
+     }elseif($this->getLevel()->getBlockIdAt($x-1.2,$y,$z-1.2) !== 0){
+      $a = "g";
+     }elseif($this->getLevel()->getBlockIdAt($x-1.2,$y,$z+1.2) !== 0){
+       $a = "h";
+     }elseif($this->getLevel()->getBlockIdAt($x+1.2,$y,$z-1.2) !== 0){
+          $a = "i";
+    }else{
+     $a = b;
+}
+       switch($a){
+       case "b": $this->move(-1/8,0,0); break;
+       case "c": $this->move(1/8,0,0); break;
+       case  "d": $this->move(0,0,1/8); break;
+       case "e": $this->move(0,0,-1/8); break;
+       case "f": $this->move(-1/8,0,-1/8); break;
+      case "g": $this->move(1/8,0,1/8); break;
+       case "h": $this->move(-1/8,0,+1/8); break;
+      case "i": $this->move(+1/8,0,-1/8);break;
+      case "a": $this->move(1/8,0,0); break;
+      }
+      break;
    }
 		$this->updateMovement();
 		parent::onUpdate($currentTick);
