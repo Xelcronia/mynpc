@@ -177,7 +177,7 @@ class NPC extends Creature{
      }elseif($this->getLevel()->getBlockIdAt($x+1.2,$y,$z-1.2) !== 0){
           $a = "i";
     }else{
-     $a = b;
+     $a = "b";
 }
        switch($a){
        case "b": $this->move(-1/8,0,0); break;
