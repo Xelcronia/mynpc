@@ -2,11 +2,11 @@
 
 一個高級的打人NPC 擁有超強的運作能力，並且不斷的更新，打破你對NPC的想法。基于GPL协议开源。請遵守所有協議
 
-- 已支持php5/7 Genisys ClearSky Imagicalmine Pocketmine...還有更多
-- It's support php5/7 Genisys Imagicmine Pocketmine....and more
+- 已支持php7 Genisys ClearSky Imagicalmine Pocketmine...還有更多
+- It's support php7 Genisys Imagicmine Pocketmine....and more server core
 
 指令
-- /new 添加新的NPC
+- /new <npc name><npc type 1/2> 添加新的NPC
 
 目前更能
 - 可自定義NAMETAG
@@ -16,10 +16,10 @@
 - 可自定義更多…
 - 可以自定義NPC皮膚
 - 可以自定義NPC死亡後要執行的指令
+- 普通NPC的移動（不會攻擊玩家)
 
 未來添加
 - 自定義手持
-- 普通NPC的移動（不會攻擊玩家)
 
 #MyNPC
 
@@ -27,8 +27,7 @@ A SUPER NPC AI . It can fight with players and the other...!
 IT CAN MOVE/FIGHT !!
 
 Command:
-- /npc [reload the npc]
-- /new [add a new fight npc into your server]
+- /new <npc name> <npc type 1/2>
 
 Features:
 - Can custom NAMETAG
@@ -38,10 +37,10 @@ Features:
 - Can custom npc skin !
 - Can custom dead npc run ? commamd
 - Can custom more....
+- Can add the normal move npc!!(no fight)
 
 Future Updates:
 - Can custom item in hand
-- Can add the normal move npc!!(no fight)
 - Fix more bugs
 
 本插件創做來自: CreeperGo
