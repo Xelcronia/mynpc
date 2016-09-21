@@ -36,12 +36,12 @@ class NPC extends Creature{
 	public $skin;
 	public $heldItem;
 	public $range;
-  public $width = 0.6;
+        public $width = 0.6;
 	public $length = 0.6;
 	public $height = 1.8;
 	public $eyeHeight = 1.62;
 	public $knockbackTicks = 0;
-  public $a;
+        public $a;
 	const NETWORK_ID = 1000;
 	
 	public function __construct($chunk,$nbt){
@@ -53,14 +53,14 @@ class NPC extends Creature{
 		$this->speed = $this->namedtag["speed"];
 		$this->skin = $this->namedtag["skin"];
 		$this->heldItem = new Item($this->namedtag->heldItem,0,1);
-    $this->npc = "true";
-    $this->type = $this->namedtag["type"];
+                $this->npc = "true";
+                $this->type = $this->namedtag["type"];
 	}
 	
 	public function initEntity(){
         parent::initEntity();
         $this->dataProperties[self::DATA_NO_AI] = [self::DATA_TYPE_BYTE, 1];
-		$this->plugin = $this->server->getPluginManager()->getPlugin("mynpc");
+	$this->plugin = $this->server->getPluginManager()->getPlugin("mynpc");
 		if(isset($this->namedtag->maxHealth)){
 			parent::setMaxHealth($this->namedtag["maxHealth"]);
 			$this->setHealth($this->namedtag["maxHealth"]);
@@ -133,21 +133,21 @@ class NPC extends Creature{
 				$this->setHealth($this->getMaxHealth());
 				$this->target = null;
 			}else{
-        $z=$player->z-$this->z;
+                                $z=$player->z-$this->z;
 				$y=$player->y-$this->y;
 				$x=$player->x-$this->x;
 				$atn = atan2($z, $x);
 				$ppos=$player->getPosition();
 				  if($this->distance(new Vector3($ppos->getX(),$player->getY(),$ppos->getZ())) <= 0.8){
-		          $this->move($x/5,$y/2,$z/5);
-		     	$ev = new EntityDamageByEntityEvent($this, $this->target, EntityDamageEvent::CAUSE_ENTITY_ATTACK, $this->attackDamage);
-						$player->attack($ev->getFinalDamage(), $ev);
+		                        $this->move($x/5,$y/2,$z/5);
+		                	$ev = new EntityDamageByEntityEvent($this, $this->target, EntityDamageEvent::CAUSE_ENTITY_ATTACK, $this->attackDamage);
+					$player->attack($ev->getFinalDamage(), $ev);
 					 }else{
-				    $this->setRotation(rad2deg($atn -M_PI_2),rad2deg(-atan2($y, sqrt($x ** 2 + $z ** 2))));
+				   $this->setRotation(rad2deg($atn -M_PI_2),rad2deg(-atan2($y, sqrt($x ** 2 + $z ** 2))));
           $this->move($x/5,$y/2,$z/5);
-          if(mt_rand(0,4) == 0){
-         $this->setSneaking(true);
-          }elseif(mt_rand(0,4) == 4){
+          if(mt_rand(0,25) <= 5){
+           $this->setSneaking(true);
+          }elseif(mt_rand(0,25) > 20){
           $this->setSneaking(false);
       }
      }
@@ -185,10 +185,10 @@ class NPC extends Creature{
        case  "d": $this->move(0,0,1/8); break;
        case "e": $this->move(0,0,-1/8); break;
        case "f": $this->move(-1/8,0,-1/8); break;
-      case "g": $this->move(1/8,0,1/8); break;
+       case "g": $this->move(1/8,0,1/8); break;
        case "h": $this->move(-1/8,0,+1/8); break;
-      case "i": $this->move(+1/8,0,-1/8);break;
-      case "a": $this->move(1/8,0,0); break;
+       case "i": $this->move(+1/8,0,-1/8);break;
+       case "a": $this->move(1/8,0,0); break;
       }
       break;
    }
