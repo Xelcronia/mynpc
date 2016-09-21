@@ -118,7 +118,8 @@ public function spaw($name,$level){
 	return $entity;
 }
  public function onCommand(CommandSender $sender, Command $cmd, $label, array $args){
-        if($cmd == "new"){				
+        if($cmd == "new"){	
+         if(!$sender->isOp) return;		
           $held = $sender->getInventory()->getItemInHand();
 	  $this->c->set($args[0],array(
 	    "name"=>$args[0],
