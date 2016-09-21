@@ -33,7 +33,6 @@ class kill extends PluginBase implements Listener{
 
 public function onEnable(){
   
-		$this->rep=1;
 		$this->getServer()->getPluginManager()->registerEvents($this, $this);
 		
 		@mkdir($this->getDataFolder());
@@ -75,10 +74,8 @@ public function onEntityDeath(EntityDeathEvent $event){
 		$this->getServer()->dispatchCommand(new ConsoleCommandSender,str_replace("{player}",$killer->getName(),$this->cachec[$entity->getNameTag()]["command"]));
 		$this->dop($entity,$event);
 		unset($entity->target);
-		if($this->rep==1){
 		$pe = $this->cachec[$entity->getNameTag()]["name"];
 		$et = $this->spaw($pe,$entity->getLevel());
-                }
         }
 }
 
