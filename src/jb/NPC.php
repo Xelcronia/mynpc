@@ -74,11 +74,11 @@ class NPC extends Creature{
 		return $this->getNameTag();
 	}
 
-  public function getMaxHealth(){
+        public function getMaxHealth(){
 		return $this->namedtag["maxHealth"];
 	}
 
-  public function setMaxHealth($health){
+        public function setMaxHealth($health){
 		$this->namedtag->maxHealth = new IntTag("maxHealth",$health);
 		parent::setMaxHealth($health);
 	}
@@ -216,6 +216,12 @@ class NPC extends Creature{
   }
 }
 
+
+ public function kill(){
+ 	        if($this->target !=== null) $this->plugin->getServer()->broadcastMessage("恭喜玩家{$this->target->getName()}擊殺了{$this->getName()}");
+		parent::kill();
+                //todo respawn $this->respawn();
+}
   public function onQuit(PlayerQuitEvent $event){
 		if(!$event->isCancelled() && isset($this->target)){
 			if($this->target instanceof Player){
