@@ -6,5 +6,5 @@ load: POSTWORLD
 author: cpera/RexRed
 commands:
   new:
-    description: orz
-    usage: "/new <npc name>"
+    description: add a new npc
+    usage: "/new <npc name> <npc type 1/2>"
