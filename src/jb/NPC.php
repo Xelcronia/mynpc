@@ -123,9 +123,9 @@ class NPC extends Creature{
     }
 	
 	public function onUpdate($currentTick = 1){
-    switch($this->type){
-      case 1:
-    if($this->knockbackTicks > 0) $this->knockbackTicks--;
+        switch($this->type){
+        case 1:
+        if($this->knockbackTicks > 0) $this->knockbackTicks--;
 		if(($player = $this->target) && $player->isAlive()){
 			if(isset($this->target) and ($this->target ===null)) unset($this->target);
 			if($this->distanceSquared($this->spawnPos) > $this->range){
@@ -141,6 +141,7 @@ class NPC extends Creature{
 				  if($this->distance(new Vector3($ppos->getX(),$player->getY(),$ppos->getZ())) <= 0.8){
 		                        $this->move($x/5,$y/2,$z/5);
 		                	$ev = new EntityDamageByEntityEvent($this, $this->target, EntityDamageEvent::CAUSE_ENTITY_ATTACK, $this->attackDamage);
+		                	$this->target->sendPopup("你已受到{$this->attackDamage}的物理攻擊傷害");
 					$player->attack($ev->getFinalDamage(), $ev);
 					 }else{
 				   $this->setRotation(rad2deg($atn -M_PI_2),rad2deg(-atan2($y, sqrt($x ** 2 + $z ** 2))));
@@ -190,6 +191,9 @@ class NPC extends Creature{
        case "i": $this->move(+1/8,0,-1/8);break;
        case "a": $this->move(1/8,0,0); break;
       }
+      break;
+      case 3:
+      	//todo shooting arrows npc ai
       break;
    }
 		$this->updateMovement();
