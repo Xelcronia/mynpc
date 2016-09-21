@@ -40,7 +40,7 @@ public function onEnable(){
        
 		$this->c=new Config($this->getDataFolder()."cfg.yml",Config::YAML,array());
 		$this->setting=new Config($this->getDataFolder()."setting.yml",Config::YAML,array());
-    $this->cachec=$this->c->getAll();
+                $this->cachec=$this->c->getAll();
 
 		$this->getLogger()->info(TextFormat::WHITE . "插件已启用！");
 		$this->getLogger()->info(TextFormat::BLUE . "===========================");
@@ -62,24 +62,24 @@ public function onEnable(){
 
 public function onEntityDeath(EntityDeathEvent $event){
 	$entity = $event->getEntity();
-  $cause = $entity->getLastDamageCause();
+        $cause = $entity->getLastDamageCause();
   	if($cause instanceof EntityDamageByEntityEvent){
     	$killer = $cause->getDamager();
-	  		if($killer instanceof Player){
-         }else{
-         $killer=$entity;
+	  	if($killer instanceof Player){
+                }else{
+                $killer=$entity;
+                }
        }
-	 	}
     if(isset($entity->namedtag->npc) and $entity->namedtag->npc=="true"){
-         $killer = $cause->getDamager();
+                $killer = $cause->getDamager();
 		$this->getServer()->dispatchCommand(new ConsoleCommandSender,str_replace("{player}",$killer->getName(),$this->cachec[$entity->getNameTag()]["command"]));
 		$this->dop($entity,$event);
 		unset($entity->target);
 		if($this->rep==1){
 		$pe = $this->cachec[$entity->getNameTag()]["name"];
 		$et = $this->spaw($pe,$entity->getLevel());
-}
-}
+                }
+        }
 }
 
 public function spaw($name,$level){
@@ -113,19 +113,18 @@ public function spaw($name,$level){
             "heldItem"=> new StringTag("heldItem",$data["heldItem"]),
             "type" => new StringTag("type",$data["type"])
             ]);
-	  $entity=Entity::createEntity("NPC",$level->getChunk($data["x"] >> 4,$data["z"] >> 4,true),$nbt);
+	$entity=Entity::createEntity("NPC",$level->getChunk($data["x"] >> 4,$data["z"] >> 4,true),$nbt);
   	$entity->setMaxHealth($this->c->get($name)["health"]);
   	$entity->setHealth($this->c->get($name)["health"]);
-      $entity->setNameTag($name);
-	  $entity->spawnToAll();
-	 return $entity;
+        $entity->setNameTag($name);
+	$entity->spawnToAll();
+	return $entity;
 }
  public function onCommand(CommandSender $sender, Command $cmd, $label, array $args){
-		if($cmd == "new"){				
-          $sender->sendMessage("test1");
+        if($cmd == "new"){				
           $held = $sender->getInventory()->getItemInHand();
-					$this->c->set($args[0],array(
-	    	    "name"=>$args[0],
+	  $this->c->set($args[0],array(
+	    "name"=>$args[0],
             "x"=>$sender->x,
             "y"=>$sender->y,
             "z"=>$sender->z,
@@ -140,19 +139,17 @@ public function spaw($name,$level){
             "command"=>"/say player",
             "skin"=>bin2hex($sender->getSkinData())
             ));
-          $sender->sendMessage("test2");
-					$this->c->save();
-					$this->spaw($args[0],$sender->getLevel());
-          $sender->sendMessage("test3");
-					$sender->sendMessage("成功新增npc: $args[0]");
+	  $this->c->save();
+	  $this->spaw($args[0],$sender->getLevel());
+	  $sender->sendMessage("成功新增npc: $args[0]");
 				}elseif($cmd == "clean"){
-					foreach($this->getServer()->getLevels() as $level){
+			            foreach($this->getServer()->getLevels() as $level){
 				    foreach($level->getEntities() as $entity){
 					if($entity instanceof Human and isset($entity->namedtag->npc)) $entity->close();
 					$sender->sendMessage("test4");
-					   }
-						}
-}
-}
+		                }
+	                }
+                }
+       }
         
 }
