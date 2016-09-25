@@ -27,7 +27,8 @@ use pocketmine\nbt\tag\FloatTag;
 use pocketmine\nbt\tag\ShortTag;
 use pocketmine\nbt\tag\ByteTag;
 use pocketmine\nbt\tag\IntTag;
-
+use pocketmine\scheduler\PluginTask;
+use pocketmine\level\particle\DestroyBlockParticle;
 
 class kill extends PluginBase implements Listener{
 
@@ -58,26 +59,6 @@ public function onEnable(){
 		}
 		$event->setDrops($it);
 	}
-
-public function onEntityDeath(EntityDeathEvent $event){
-	$entity = $event->getEntity();
-        $cause = $entity->getLastDamageCause();
-  	if($cause instanceof EntityDamageByEntityEvent){
-    	$killer = $cause->getDamager();
-	  	if($killer instanceof Player){
-                }else{
-                $killer=$entity;
-                }
-       }
-    if(isset($entity->namedtag->npc) and $entity->namedtag->npc=="true"){
-                $killer = $cause->getDamager();
-		$this->getServer()->dispatchCommand(new ConsoleCommandSender,str_replace("{player}",$killer->getName(),$this->cachec[$entity->getNameTag()]["command"]));
-		$this->dop($entity,$event);
-		unset($entity->target);
-		$pe = $this->cachec[$entity->getNameTag()]["name"];
-		$et = $this->spaw($pe,$entity->getLevel());
-        }
-}
 
 public function spaw($name,$level){
      $motion = new Vector3(0,0,0);
@@ -150,4 +131,30 @@ public function spaw($name,$level){
                 }
        }
         
+
+  public function respawn($name,$time,$level){
+  		if($this->c->get($name)) $this->getServer()->getScheduler()->scheduleDelayedTask(new RespawnTask($this,$name,$level), $time);
+	}
+
+  public function giveReward($name,$player){
+  if($this->c->get($name)) $player->getInventory()->addItem($this->c->get($name)["drops"],0,1);
+}
+
+  public function blood($entity){
+	$entity->getLevel()->addParticle(new DestroyBlockParticle(new Vector3($entity->x, $entity->y, $entity->z), Block::get(152)));
+}
+}
+
+class RespawnTask extends PluginTask{
+	
+	public function __construct(Main $plugin,$name,$level){
+		parent::__construct($plugin);
+		$this->plugin = $plugin;
+		$this->name = $name;
+    $this->level = $level;
+	}
+	
+	public function onRun($currentTick){
+		$this->plugin->spaw($this->name,$level);
+	}
 }
