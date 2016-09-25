@@ -1,6 +1,6 @@
 name: mynpc
 main: jb\kill
-version: 1.0.5
+version: 1.0.10
 api: [1.0.0]
 load: POSTWORLD
 author: cpera/RexRed
