@@ -130,31 +130,8 @@ public function spaw($name,$level){
 	                }
                 }
        }
-        
-
-  public function respawn($name,$time,$level){
-  		if($this->c->get($name)) $this->getServer()->getScheduler()->scheduleDelayedTask(new RespawnTask($this,$name,$level), $time);
-	}
-
-  public function giveReward($name,$player){
-  if($this->c->get($name)) $player->getInventory()->addItem($this->c->get($name)["drops"],0,1);
-}
 
   public function blood($entity){
 	$entity->getLevel()->addParticle(new DestroyBlockParticle(new Vector3($entity->x, $entity->y, $entity->z), Block::get(152)));
 }
-}
-
-class RespawnTask extends PluginTask{
-	
-	public function __construct(Main $plugin,$name,$level){
-		parent::__construct($plugin);
-		$this->plugin = $plugin;
-		$this->name = $name;
-    $this->level = $level;
-	}
-	
-	public function onRun($currentTick){
-		$this->plugin->spaw($this->name,$level);
-	}
 }
