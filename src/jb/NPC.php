@@ -226,11 +226,9 @@ class NPC extends Creature{
  public function kill(){
  	        if($this->target !== null){
           $this->plugin->getServer()->broadcastMessage("恭喜玩家{$this->target->getName()}擊殺了{$this->getName()}");
-          $this->plugin->giveReward($this->getNameTag(),$this->target);
-           unset($this->target);
            }
 		parent::kill();
-    $this->plugin->respawn($this->getNameTag(), 1000,$this->getLevel());
+    $this->plugin->spaw($this->getNameTag(),$this->getLevel());
 }
 
   public function onQuit(PlayerQuitEvent $event){
