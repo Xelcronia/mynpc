@@ -140,13 +140,13 @@ class NPC extends Creature{
 				$atn = atan2($z, $x);
 				$ppos=$player->getPosition();
 				  if($this->distance(new Vector3($ppos->getX(),$player->getY(),$ppos->getZ())) <= 0.8){
-		                        $this->move($x/5,$y/2,$z/5);
+		                        $this->move($x/8,$y/1.2,$z/8);
 		                	$ev = new EntityDamageByEntityEvent($this, $this->target, EntityDamageEvent::CAUSE_ENTITY_ATTACK, $this->attackDamage);
 		        $this->target->sendPopup("你已受到{$this->attackDamage}的物理攻擊傷害");
 					$player->attack($ev->getFinalDamage(), $ev);
 					 }else{
 				   $this->setRotation(rad2deg($atn -M_PI_2),rad2deg(-atan2($y, sqrt($x ** 2 + $z ** 2))));
-          $this->move($x/5,$y/2,$z/5);
+                                   $this->move($x/8,$y/1.2,$z/8);
           if(mt_rand(0,25) <= 5){
            $this->setSneaking(true);
           }elseif(mt_rand(0,25) > 20){
