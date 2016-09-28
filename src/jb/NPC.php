@@ -56,6 +56,7 @@ class NPC extends Creature{
 		$this->heldItem = new Item($this->namedtag->heldItem,0,1);
                 $this->npc = "true";
                 $this->type = $this->namedtag["type"];
+                $this->a = 10;
 	}
 	
 	public function initEntity(){
@@ -127,6 +128,7 @@ class NPC extends Creature{
         switch($this->type){
         case 1:
         if($this->knockbackTicks > 0) $this->knockbackTicks--;
+                $this->a--;
 		if(($player = $this->target) && $player->isAlive()){
 			if(isset($this->target) and ($this->target ===null)) unset($this->target);
 			if($this->distanceSquared($this->spawnPos) > $this->range){
@@ -140,10 +142,13 @@ class NPC extends Creature{
 				$atn = atan2($z, $x);
 				$ppos=$player->getPosition();
 				  if($this->distance(new Vector3($ppos->getX(),$player->getY(),$ppos->getZ())) <= 0.8){
+                                     if($this->a <= 0){
 		                        $this->move($x/8,$y/1.2,$z/8);
 		                	$ev = new EntityDamageByEntityEvent($this, $this->target, EntityDamageEvent::CAUSE_ENTITY_ATTACK, $this->attackDamage);
-		        $this->target->sendPopup("你已受到{$this->attackDamage}的物理攻擊傷害");
+		                        $this->target->sendPopup("你已受到{$this->attackDamage}的物理攻擊傷害");
 					$player->attack($ev->getFinalDamage(), $ev);
+                                        $this->a = 10;
+                                            }                                          
 					 }else{
 				   $this->setRotation(rad2deg($atn -M_PI_2),rad2deg(-atan2($y, sqrt($x ** 2 + $z ** 2))));
                                    $this->move($x/8,$y/1.2,$z/8);
@@ -168,18 +173,18 @@ class NPC extends Creature{
       $a = "c";
       }elseif($this->getLevel()->getBlockIdAt($x,$y,$z-1.2) !== 0){
       $a = "d";
-     }elseif($this->getLevel()->getBlockIdAt($x,$y,$z+1.2) !== 0){
+      }elseif($this->getLevel()->getBlockIdAt($x,$y,$z+1.2) !== 0){
       $a = "e";
-     }elseif($this->getLevel()->getBlockIdAt($x+1.2,$y,$z+1.2) !== 0){
+      }elseif($this->getLevel()->getBlockIdAt($x+1.2,$y,$z+1.2) !== 0){
       $a = "f";
-     }elseif($this->getLevel()->getBlockIdAt($x-1.2,$y,$z-1.2) !== 0){
+      }elseif($this->getLevel()->getBlockIdAt($x-1.2,$y,$z-1.2) !== 0){
       $a = "g";
-     }elseif($this->getLevel()->getBlockIdAt($x-1.2,$y,$z+1.2) !== 0){
-       $a = "h";
-     }elseif($this->getLevel()->getBlockIdAt($x+1.2,$y,$z-1.2) !== 0){
-          $a = "i";
-    }else{
-     $a = "b";
+      }elseif($this->getLevel()->getBlockIdAt($x-1.2,$y,$z+1.2) !== 0){
+      $a = "h";
+      }elseif($this->getLevel()->getBlockIdAt($x+1.2,$y,$z-1.2) !== 0){
+      $a = "i";
+      }else{
+      $a = "b";
 }
        switch($a){
        case "b": $this->move(-1/8,0,0); break;
