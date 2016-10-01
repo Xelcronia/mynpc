@@ -53,7 +53,7 @@ class NPC extends Creature{
 		$this->attackDamage = $this->namedtag["attackDamage"];
 		$this->speed = $this->namedtag["speed"];
 		$this->skin = $this->namedtag["skin"];
-		$this->heldItem = new Item($this->namedtag->heldItem,0,1);
+		$this->heldItem = new Item(0,0,0);
                 $this->npc = "true";
                 $this->type = $this->namedtag["type"];
                 $this->a = 10;
