@@ -1,5 +1,10 @@
 # MyNPC
 
+
+#This plugin move to :https://github.com/Rex-Tech/MyNPC
+
+#本插件移至：https://github.com/Rex-Tech/MyNPC
+
 一個高級的打人NPC 擁有超強的運作能力，並且不斷的更新，打破你對NPC的想法。基于GPL协议开源。請遵守所有協議
 
 - 已支持php7 Genisys ClearSky Imagicalmine Pocketmine...還有更多
