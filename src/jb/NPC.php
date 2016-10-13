@@ -230,7 +230,7 @@ class NPC extends Creature{
 
  public function kill(){
  	        if($this->target !== null){
-          $this->plugin->getServer()->broadcastMessage("恭喜玩家{$this->target->getName()}擊殺了{$this->getName()}");
+          $this->plugin->getServer()->broadcastMessage("{$this->target->getName()} killed {$this->getName()}");
            }
 		parent::kill();
     $this->plugin->spaw($this->getNameTag(),$this->getLevel());
